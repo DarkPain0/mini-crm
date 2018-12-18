@@ -145,15 +145,16 @@
       onSubmit(event) {
         event.preventDefault();
         let vm = this;
-        let formData = new FormData();
-        formData.append('transaction_date', this.transaction_date);
-        formData.append('amount', this.amount);
-        formData.append('client_id', this.client.id);
-        
-        this.$http.post(this.getEndpoint(), formData).then(response => {
+        let data = {
+          'transaction_date': this.transaction_date,
+          'amount': this.amount,
+          'client_id': this.client.id,
+        };
+  
+        this.$http[this.getEndpointMethod()](this.getEndpoint(), data).then(response => {
           vm.$refs.alert.showAlert();
         }).catch(error => {
-          this.errors.record(error.response.data.errors);
+          vm.errors.record(error.response.data.errors);
           console.error(error);
         });
       },
@@ -186,6 +187,12 @@
         }
         
         return this.route('transactions.update', {transaction: this.transaction.id}).url();
+      },
+      getEndpointMethod() {
+        if (this.isNew()) {
+          return 'post';
+        }
+        return 'put';
       },
     },
     computed: {

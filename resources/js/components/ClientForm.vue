@@ -169,7 +169,7 @@
         formData.append('first_name', this.first_name);
         formData.append('last_name', this.last_name);
         formData.append('email', this.email);
-        this.$http.post(this.getEndpoint(), formData, config).then(response => {
+        this.$http[this.getEndpointMethod()](this.getEndpoint(), formData, config).then(response => {
           // todo show message or redirect
           vm.$refs.alert.showAlert();
         }).catch(error => {
@@ -207,6 +207,12 @@
         }
         
         return this.route('clients.update', {client: this.client.id}).url();
+      },
+      getEndpointMethod() {
+        if (this.isNew()) {
+          return 'post';
+        }
+        return 'put';
       },
     },
     computed: {

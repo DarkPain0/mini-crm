@@ -12,9 +12,9 @@ use Illuminate\Database\Eloquent\Model;
  * @param int|null   $counter
  * @param array|null $states
  *
- * @return mixed
+ * @return Model|\Illuminate\Database\Eloquent\Collection
  */
-function create(string $class, ?array $attributes = null, ?int $counter = null, ?array $states = null): Model
+function create(string $class, ?array $attributes = null, ?int $counter = null, ?array $states = null)
 {
     if (is_array($states)) {
         return factory($class, $counter)
@@ -32,9 +32,9 @@ function create(string $class, ?array $attributes = null, ?int $counter = null, 
  * @param int|null   $counter
  * @param array|null $states
  *
- * @return mixed
+ * @return Model|\Illuminate\Database\Eloquent\Collection
  */
-function make(string $class, ?array $attributes = null, ?int $counter = null, ?array $states = null): Model
+function make(string $class, ?array $attributes = null, ?int $counter = null, ?array $states = null)
 {
     if (is_array($states)) {
         return factory($class, $counter)

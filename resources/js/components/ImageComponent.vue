@@ -5,18 +5,25 @@
       <b-col>
         <b-row>
           <b-col
+            v-if="srcImage || avatar"
             sm="12"
             md="4"
-            v-if="srcImage || avatar">
+          >
             <b-img
               :src="srcImage || image"
               rounded="circle"
               width="150"
               height="150"
               class="m-1"
-              alt="image"/>
+              alt="image"
+            >
+            </b-img>
           </b-col>
-          <b-col sm="12" md="8" v-if="!disabled">
+          <b-col
+            v-if="!disabled"
+            sm="12"
+            md="8"
+          >
             <b-form-file
               accept=".jpg, .jpeg, .png, .bmp, .gif, .svg"
               v-model="avatar"
@@ -44,6 +51,7 @@
       srcImage: {
         type: [Object, String],
         required: false,
+        default: '',
       },
       isValid: {
         type: Boolean,

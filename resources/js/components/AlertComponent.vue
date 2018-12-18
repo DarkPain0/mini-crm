@@ -4,11 +4,11 @@
     :show="dismissCountDown"
     :variant="variant"
     @dismissed="dismissCountDown=0"
-    @dismiss-count-down="countDownChanged"
     dismisable
     fade
+    @dismiss-count-down="countDownChanged"
   >
-    {{message}}
+    {{ message }}
   </b-alert>
 </template>
 

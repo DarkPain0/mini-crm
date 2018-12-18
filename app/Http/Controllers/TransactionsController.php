@@ -91,7 +91,11 @@ class TransactionsController extends Controller
      */
     public function update(StoreTransactionRequest $request, Transaction $transaction): TransactionResource
     {
-        return new TransactionResource($transaction->update($request->validated()));
+        //update transaction
+        $transaction->update($request->validated());
+        //return formatted response
+        return TransactionResource::make($transaction->load('client')
+                                                     ->refresh());
     }
     
     /**
@@ -100,10 +104,10 @@ class TransactionsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param  \App\Transaction        $transaction
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(Request $request, Transaction $transaction): \Illuminate\Http\Response
+    public function destroy(Request $request, Transaction $transaction)
     {
         $transaction->delete();
         

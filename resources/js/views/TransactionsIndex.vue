@@ -218,7 +218,7 @@
         this.totalResults = filteredItems.length;
       },
       onDeleteTransaction(id) {
-        this.$http.delete(this.route('transactions.destroy', {client: id})).then(response => {
+        this.$http.delete(this.route('transactions.destroy', {transaction: id})).then(response => {
           this.$refs.alert.showAlert();
           this.fetchData();
         }).catch(error => {

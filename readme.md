@@ -2,7 +2,7 @@
 <p>Mini CRM demo app using VueJS and Laravel PHP Framework</p>
 
 # Author
-<p>Created by  Marios Vasiliou<p>
+<p>Created by Marios Vasiliou<p>
 <p>Mobile and Full Stack Developer<p>
 <a href="https://linkedin.com/in/darkpain">LinkedIn</a>
 
@@ -21,9 +21,9 @@
 - MYSQL Server 5.7+
 
 # Clone 
-To clone repository open terminal and type
-git clone https://github.com/DarkPain0/mini-crm.git for HTTPS
-or git@github.com:DarkPain0/mini-crm.git for SSH
+To clone repository open terminal and type\
+git clone https://github.com/DarkPain0/mini-crm.git for HTTPS\
+git clone git@github.com:DarkPain0/mini-crm.git for SSH
 
 # Installation
 In the root repository folder you have cloned write those commands
