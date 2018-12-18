@@ -1,6 +1,5 @@
 # Project
 <p>Mini CRM demo app using VueJS and Laravel PHP Framework</p>
-Coverage: 80%
 
 # Author
 <p>Created by  Marios Vasiliou<p>
