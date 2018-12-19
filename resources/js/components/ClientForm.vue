@@ -9,6 +9,7 @@
       <div class="card-body">
         <b-form
           ref="form"
+          id="form-client"
           v-if="show"
           @reset="onReset"
           @submit.prevent="onSubmit"
@@ -89,12 +90,14 @@
             <!-- Accept specific image formats by extension -->
             <image-component
               :is-valid="errors.missing('avatar')"
-              required
+              :preview-image="previewAvatar"
               @imageLoaded="saveImageToForm"
+              required
             >
-              <p slot="message">{{ errors.get('avatar') || 'This is a required image file and must be minimum 100x100px' }}</p>
             </image-component>
-          
+            <div class="text-danger" v-if="errors.has('avatar')">
+              {{ errors.get('avatar') || 'This is a required image file and must be minimum 100x100px' }}
+            </div>
           </b-form-group>
           
           <b-button
@@ -154,34 +157,62 @@
         last_name: '',
         email: '',
         avatar: '',
+        previewAvatar: '',
+        alertMessage: '',
       };
     },
     methods: {
+      getData() {
+        if (this.isNew()) {
+          let formData = new FormData();
+          formData.append('avatar', this.avatar);
+          formData.append('first_name', this.first_name);
+          formData.append('last_name', this.last_name);
+          formData.append('email', this.email);
+          return formData;
+        } else {
+          return {
+            avatar: this.avatar.src,
+            first_name: this.first_name,
+            last_name: this.last_name,
+            email: this.email,
+          };
+        }
+      },
+      getHeaders() {
+        if (this.isNew()) {
+          return {
+            headers: {'content-type': 'multipart/form-data'},
+          };
+        } else {
+          return null;
+        }
+      },
       onSubmit(event) {
         let vm = this;
         event.preventDefault();
-        //create form data
-        const config = {
-          headers: {'content-type': 'multipart/form-data'},
-        };
-        let formData = new FormData();
-        formData.append('avatar', this.avatar);
-        formData.append('first_name', this.first_name);
-        formData.append('last_name', this.last_name);
-        formData.append('email', this.email);
-        this.$http[this.getEndpointMethod()](this.getEndpoint(), formData, config).then(response => {
-          // todo show message or redirect
+        this.$http[this.getEndpointMethod()](this.getEndpoint(), this.getData(), this.getHeaders()).then(response => {
+          if (response.status === 2000) {
+            this.alertMessage = 'Client Saved Successfully';
+          } else {
+            this.alertMessage = response.statusText;
+          }
           vm.$refs.alert.showAlert();
         }).catch(error => {
-          this.errors.record(error.response.data.errors);
-          console.error(error);
+          console.error(error.response);
+          console.error(error.request);
+          console.error(error.message);
+          if (vm.errors) {
+            vm.errors.record(error.response.data.errors);
+          } else {
+            this.alertMessage = error.response.statusText;
+            vm.$refs.alert.showAlert();
+          }
         });
       },
       
       onReset(event) {
         event.preventDefault();
-        //reset errors
-        this.errors.clear();
         //reset fields
         this.avatar = '';
         this.first_name = '';
@@ -228,7 +259,7 @@
         this.first_name = this.client.first_name;
         this.last_name = this.client.last_name;
         this.email = this.client.email;
-        this.avatar = this.client.avatar_path;
+        this.previewAvatar = this.client.avatar_path;
       }
     },
   };

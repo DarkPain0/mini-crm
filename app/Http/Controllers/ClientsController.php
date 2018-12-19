@@ -49,19 +49,36 @@ class ClientsController extends Controller
     {
         //get validated data
         $data = $request->validated();
+        //save avatar image
+        $data = $this->saveAvatar($request, $data);
+        //create client and return response
+        return Client::create($data);
+    }
+    
+    /**
+     * Save Avatar for client
+     *
+     * @param \App\Http\Requests\StoreClientRequest $request
+     * @param                                       $data
+     *
+     * @return array
+     */
+    private function saveAvatar(StoreClientRequest $request, $data): array
+    {
         if ($request->hasFile('avatar')) {
             //save avatar
-            $file_name = 'image_' . time() . $request->file('avatar')
-                                                     ->getClientOriginalExtension();
+            $file_name = 'image_' . time() . '.' . $request->file('avatar')
+                                                           ->getClientOriginalExtension();
             $request->file('avatar')
                     ->storePubliclyAs('', $file_name, ['disk' => 'avatars']);
             //remove avatar from data
             array_forget($data, 'avatar');
             //add avatar path to data
             $data['avatar_path'] = '/storage/avatars/' . $file_name;
+            return $data;
         }
-        //create client and return response
-        return Client::forceCreate($data);
+        
+        return [];
     }
     
     /**
@@ -102,7 +119,14 @@ class ClientsController extends Controller
      */
     public function update(StoreClientRequest $request, Client $client): ClientResource
     {
-        return new ClientResource($client->update($request->validated()));
+        $data = $request->validated();
+        //save avatar image
+        $data = $this->saveAvatar($request, $data);
+        //update client
+        $client->update($data);
+        //return formatted response
+        return ClientResource::make($client->load('transactions')
+                                           ->refresh());
     }
     
     /**

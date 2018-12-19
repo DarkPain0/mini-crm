@@ -5,12 +5,12 @@
       <b-col>
         <b-row>
           <b-col
-            v-if="srcImage || avatar"
+            v-if="previewImage || avatar"
             sm="12"
             md="4"
           >
             <b-img
-              :src="srcImage || image"
+              :src="previewImage || image"
               rounded="circle"
               width="150"
               height="150"
@@ -48,7 +48,7 @@
   export default {
     name: 'ImageComponent',
     props: {
-      srcImage: {
+      previewImage: {
         type: [Object, String],
         required: false,
         default: '',

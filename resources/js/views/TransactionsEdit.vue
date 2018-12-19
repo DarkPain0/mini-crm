@@ -49,13 +49,13 @@
               >
                 <b-form-input
                   id="dateInput"
-                  type="date"
                   v-model="transaction_date"
+                  type="date"
                   required
                   placeholder="Select transaction date"
-                  aria-describedby="dateFeedback"
                   :state="errors.missing('transaction_date')"
                   :disabled="disabled"
+                  aria-describedby="dateFeedback"
                 >
                 </b-form-input>
                 <b-form-invalid-feedback id="dateFeedback">
