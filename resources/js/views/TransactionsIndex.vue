@@ -92,7 +92,7 @@
           </template>
           <!-- A custom formatted column for client -->
           <template slot="client" slot-scope="data">
-            <a :href="route('clients.show',{client:data.item.client_id})">{{data.item.client}}</a>
+            <a :href="route('clients.edit',{client:data.item.client_id})">{{data.item.client}}</a>
           </template>
         </b-table>
       
